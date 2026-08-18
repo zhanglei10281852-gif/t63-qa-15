@@ -14,8 +14,7 @@ import (
 )
 
 func Ensure(ctx context.Context, store repository.Store, ids identity.Generator, clk clock.Clock) error {
-	seedCtx := context.Background()
-	vehicles, err := store.ListVehicles(seedCtx, repository.VehicleFilter{}, pagination.Query{Limit: 1})
+	vehicles, err := store.ListVehicles(ctx, repository.VehicleFilter{}, pagination.Query{Limit: 1})
 	if err != nil {
 		return err
 	}
@@ -29,12 +28,12 @@ func Ensure(ctx context.Context, store repository.Store, ids identity.Generator,
 			if err != nil {
 				return err
 			}
-			if err := store.SaveVehicle(seedCtx, item, 0); err != nil {
+			if err := store.SaveVehicle(ctx, item, 0); err != nil {
 				return err
 			}
 		}
 	}
-	routes, err := store.ListRoutes(seedCtx, pagination.Query{Limit: 1})
+	routes, err := store.ListRoutes(ctx, pagination.Query{Limit: 1})
 	if err != nil {
 		return err
 	}
@@ -43,11 +42,11 @@ func Ensure(ctx context.Context, store repository.Store, ids identity.Generator,
 		if err != nil {
 			return err
 		}
-		if err := store.SaveRoute(seedCtx, route); err != nil {
+		if err := store.SaveRoute(ctx, route); err != nil {
 			return err
 		}
 	}
-	drivers, err := store.ListDrivers(seedCtx, "", pagination.Query{Limit: 1})
+	drivers, err := store.ListDrivers(ctx, "", pagination.Query{Limit: 1})
 	if err != nil {
 		return err
 	}
@@ -62,7 +61,7 @@ func Ensure(ctx context.Context, store repository.Store, ids identity.Generator,
 				return err
 			}
 		}
-		if err := store.SaveDriver(seedCtx, driver, 0); err != nil {
+		if err := store.SaveDriver(ctx, driver, 0); err != nil {
 			return err
 		}
 	}
